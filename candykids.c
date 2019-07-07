@@ -4,11 +4,19 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <pthread.h>
+#include <time.h>
 
 typedef struct  {
     int factory_number;
     double time_stamp_in_ms;
 } candy_t;
+
+double current_time_in_ms(void)
+{
+    struct timespec now;
+    clock_gettime(CLOCK_REALTIME, &now);
+    return now.tv_sec * 1000.0 + now.tv_nsec/1000000.0;
+}
 
 _Bool stop_thread = false;
 
@@ -23,7 +31,7 @@ void *candy_factory_function(void* arg) {
     //allocate new candy item and populate its fields
     candy_t *new_candy = malloc(sizeof(candy_t));
     new_candy->factory_number = num;
-    new_candy->time_stamp_in_ms =
+    new_candy->time_stamp_in_ms = current_time_in_ms();
 
     //adding candy to bounded buffer
     bbuff_blocking_insert(new_candy);
@@ -39,7 +47,7 @@ void *kid_function() {
     //sleep random time between 0-1 inclusive seconds
     int wait_time = rand()%1;
     //extract candy from bounded buffer
-    printf("%d", bbuff_blocking_extract();
+    printf("%d", bbuff_blocking_extract());
 
     sleep(wait_time);
   }
@@ -65,18 +73,44 @@ int main(int argc, char** argv) {
 
     // 3.  Launch candy-factory threads
     for(int i = 0;i < number_of_factories; i++){
-
+      pthread_id daThreadId;
+      pthread_create(&daThreadId, ...);
     }
-
 
     // 4.  Launch kid threads
     for(int j = 0;j < number_of_kids; j++){
-
+      pthread_id kidThreadId;
+      pthread_create(&daThreadId, ...);
     }
+
     // 5.  Wait for requested time
+    for(int k = 0; k < number_of_seconds; k++){
+      sleep(1);
+      printf("Time %ds\n", k+1);
+    }
+
     // 6.  Stop candy-factory threads
+    stop_thread = true;
+    for (int l = 0; l < number_of_factories; l++){
+      pthread_join (daThreadID, NULL);
+    }
+
     // 7.  Wait until no more candy
+    while (!bbuff_is_empty){
+      printf("Waiting for all candy to be consumed\n");
+      sleep(1);
+    }
+
     // 8.  Stop kid threads
+    for (int m = 0; m < number_of_kids; m++){
+      pthread_cancel (kid_threads);
+      pthread_join (kid_threads, NULL);
+    }
+
     // 9.  Print statistics
+    stats_display();
+
     // 10. Cleanup any allocated memory
+    stats_cleanup();
+
 }
