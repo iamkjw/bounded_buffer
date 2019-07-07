@@ -72,15 +72,22 @@ int main(int argc, char** argv) {
     srand(time(NULL));
 
     // 3.  Launch candy-factory threads
+    //create array holding the factory threads
+    pthread_id factory_thread_array[number_of_factories];
+    //create array holding factory numbers to join on later
+    int factory_id_array[number_of_factories];
+
     for(int i = 0; i < number_of_factories; i++){
-      pthread_id daThreadId;
-      pthread_create(&daThreadId, ...);
+      factory_id_array[i] = i;
+      pthread_create(&factory_thread_array[i], 0, candy_factory_function, &factory_id_array[i]);
     }
 
     // 4.  Launch kid threads
+    //create array holding the kid threads
+    pthread_id kid_thread_array[number_of_kids];
+
     for(int j = 0; j < number_of_kids; j++){
-      pthread_id kidThreadI;
-      pthread_create(&daThreadId, ...);
+      pthread_create(&kid_thread_array[j], 0, kid_function, NULL);
     }
 
     // 5.  Wait for requested time
