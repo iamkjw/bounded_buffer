@@ -72,14 +72,14 @@ int main(int argc, char** argv) {
     srand(time(NULL));
 
     // 3.  Launch candy-factory threads
-    for(int i = 0;i < number_of_factories; i++){
+    for(int i = 0; i < number_of_factories; i++){
       pthread_id daThreadId;
       pthread_create(&daThreadId, ...);
     }
 
     // 4.  Launch kid threads
-    for(int j = 0;j < number_of_kids; j++){
-      pthread_id kidThreadId;
+    for(int j = 0; j < number_of_kids; j++){
+      pthread_id kidThreadI;
       pthread_create(&daThreadId, ...);
     }
 
@@ -92,7 +92,7 @@ int main(int argc, char** argv) {
     // 6.  Stop candy-factory threads
     stop_thread = true;
     for (int l = 0; l < number_of_factories; l++){
-      pthread_join (daThreadID, NULL);
+      pthread_join (factory_thread_array[l], NULL);
     }
 
     // 7.  Wait until no more candy
@@ -103,8 +103,8 @@ int main(int argc, char** argv) {
 
     // 8.  Stop kid threads
     for (int m = 0; m < number_of_kids; m++){
-      pthread_cancel (kid_threads);
-      pthread_join (kid_threads, NULL);
+      pthread_cancel (kid_thread_array[m]);
+      pthread_join (kid_thread_array[m], NULL);
     }
 
     // 9.  Print statistics
