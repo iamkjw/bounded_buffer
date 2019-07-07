@@ -76,18 +76,36 @@ int main(int argc, char** argv) {
     pthread_id factory_thread_array[number_of_factories];
     //create array holding factory numbers to join on later
     int factory_id_array[number_of_factories];
+    //attr init to run pthread_create function (doesn't need values in this case)
+    pthread_attr_t *fac_attr;
+    pthread_attr_init(&fac_attr);
 
     for(int i = 0; i < number_of_factories; i++){
       factory_id_array[i] = i;
-      pthread_create(&factory_thread_array[i], 0, candy_factory_function, &factory_id_array[i]);
+      pthread_create(&factory_thread_array[i],
+                      //attr to be passed to create function
+                      &fac_attr,
+                      //function to be executed
+                      candy_factory_function,
+                      //arg to be passed into function
+                      &factory_id_array[i]);
     }
 
     // 4.  Launch kid threads
     //create array holding the kid threads
     pthread_id kid_thread_array[number_of_kids];
+    //attr init to run pthread_create function (doesn't need values in this case)
+    pthread_attr_t *kid_attr;
+    pthread_attr_init(&kid_attr);
 
     for(int j = 0; j < number_of_kids; j++){
-      pthread_create(&kid_thread_array[j], 0, kid_function, NULL);
+      pthread_create(&kid_thread_array[j],
+                      //attr to be passed to create function
+                      &attr,
+                      //function to be executed
+                      kid_function,
+                      //arg to be passed into function
+                      NULL);
     }
 
     // 5.  Wait for requested time
