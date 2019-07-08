@@ -63,12 +63,13 @@ void stats_display(void){
       printf("ERROR: Mismatch between number made and eaten");
       continue;
     }
-    printf("%8d%10.5f%10.5f%10.5f%10.5f%10.5f\n", i,
-                                                  factories[i].made,
-                                                  factories[i].eaten,
-                                                  factories[i].minDelay,
-                                                  //find avg by dividing totaldelay by number eaten
-                                                  factories[i].totalDelay/factories[i].eaten,
-                                                  factories[i].maxDelay);
+    printf("%8d%10.5f%10.5f%10.5f%10.5f%10.5f\n",
+          i,
+          factories[i].made,
+          factories[i].eaten,
+          factories[i].minDelay,
+          //find avg by dividing totaldelay by number eaten
+          factories[i].totalDelay/factories[i].eaten,
+          factories[i].maxDelay);
   }
 }
