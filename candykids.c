@@ -101,7 +101,7 @@ int main(int argc, char** argv) {
     for(int j = 0; j < number_of_kids; j++){
       pthread_create(&kid_thread_array[j],
                       //attr to be passed to create function
-                      &attr,
+                      &kid_attr,
                       //function to be executed
                       kid_function,
                       //arg to be passed into function
@@ -121,7 +121,7 @@ int main(int argc, char** argv) {
     }
 
     // 7.  Wait until no more candy
-    while (!bbuff_is_empty){
+    while (bbuff_is_empty() == false){
       printf("Waiting for all candy to be consumed\n");
       sleep(1);
     }
@@ -137,5 +137,5 @@ int main(int argc, char** argv) {
 
     // 10. Cleanup any allocated memory
     stats_cleanup();
-
+    return 0;
 }
