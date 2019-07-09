@@ -30,7 +30,7 @@ void *candy_factory_function(void* arg) {
   while(!stop_thread){
     //wait random time between 0-3 inclusive seconds
     int wait_time = rand()%3;
-    printf("\tFactory %d ships candy & waits %ds\n", *num, wait_time);
+    printf("Factory %d ships candy & waits %ds\n", *num, wait_time);
     //allocate new candy item and populate its fields
     candy_t *new_candy = malloc(sizeof(candy_t));
     new_candy->factory_number = *num;
@@ -61,17 +61,10 @@ void *kid_function() {
 
 int main(int argc, char** argv) {
     // 1.  Extract arguments
-    if(argc < 4){
-      printf("Error: Not enough arguments\n");
-      exit(1);
-    }else if(argc > 4){
-      printf("Error: Too many arguments\n");
-      exit(1);
-    }
-
     int number_of_factories = atoi(argv[1]);
     int number_of_kids = atoi(argv[2]);
     int number_of_seconds = atoi(argv[3]);
+
     //Ensures that all arguments are greater than 0
     if(number_of_factories <= 0 || number_of_kids <= 0 || number_of_seconds <= 0){
       printf("Error: arguments are not greater than 0\n");
@@ -118,7 +111,7 @@ int main(int argc, char** argv) {
     // 5.  Wait for requested time
     for(int k = 0; k < number_of_seconds; k++){
       sleep(1);
-      printf("Time %ds:\n", k+1);
+      printf("Time %ds\n", k+1);
     }
 
     // 6.  Stop candy-factory threads
