@@ -10,9 +10,11 @@ typedef struct {
   float maxDelay; //max time between production and consumtion (milliseconds)
 } factory_t;
 
+factory_t *factories;
+
 void stats_init(int num_producers){
   //create array of candy factory structs
-  factory_t *factories = malloc(num_producers * sizeof *factories);
+  factories = malloc(num_producers * sizeof *factories);
 
   //initialize each candy factory
   for (int i = 0; i < num_producers; i++){
@@ -63,7 +65,7 @@ void stats_display(void){
       printf("ERROR: Mismatch between number made and eaten");
       continue;
     }
-    printf("%8d%10.5f%10.5f%10.5f%10.5f%10.5f\n",
+    printf("%8d%10.5d%10.5d%10.5f%10.5f%10.5f\n",
           i,
           factories[i].made,
           factories[i].eaten,

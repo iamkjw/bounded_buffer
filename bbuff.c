@@ -70,7 +70,7 @@ _Bool bbuff_is_empty(void){
 
   //obtain semaphore value
   int isempty;
-  sem_getvalue (&data, isempty);
+  sem_getvalue (&data, &isempty);
 
   //release mutex
   sem_post (&mutex);
