@@ -30,7 +30,7 @@ void *candy_factory_function(void* arg) {
   while(!stop_thread){
     //wait random time between 0-3 inclusive seconds
     int wait_time = rand()%3;
-    printf("Factory %d ships candy & waits %ds\n", *num, wait_time);
+    printf("\tFactory %d ships candy & waits %ds\n", *num, wait_time);
     //allocate new candy item and populate its fields
     candy_t *new_candy = malloc(sizeof(candy_t));
     new_candy->factory_number = *num;
@@ -111,7 +111,7 @@ int main(int argc, char** argv) {
     // 5.  Wait for requested time
     for(int k = 0; k < number_of_seconds; k++){
       sleep(1);
-      printf("Time %ds\n", k+1);
+      printf("Time %ds:\n", k+1);
     }
 
     // 6.  Stop candy-factory threads

@@ -54,7 +54,7 @@ void stats_record_consumed(int factory_number, double delay_in_ms){
 
 void stats_display(void){
   printf("Statistics:\n");
-  printf("%8s%10s%10s%10s%10s%10s\n", "Factory#", "#Made", "#Eaten", "Min Delay[ms]", "Avg Delay[ms]", "Max Delay[ms]");
+  printf("%8s %10s %10s %15s %15s %15s\n", "Factory#", "#Made", "#Eaten", "Min Delay[ms]", "Avg Delay[ms]", "Max Delay[ms]");
 
   //finding number of factories in factories array
   int len = sizeof(factories)/sizeof(factory_t);
@@ -65,7 +65,7 @@ void stats_display(void){
       printf("ERROR: Mismatch between number made and eaten");
       continue;
     }
-    printf("%8d%10.5d%10.5d%10.5f%10.5f%10.5f\n",
+    printf("%8d %10.5d %10.5d %15.5f %15.5f %15.5f\n",
           i,
           factories[i].made,
           factories[i].eaten,
