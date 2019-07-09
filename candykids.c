@@ -61,10 +61,17 @@ void *kid_function() {
 
 int main(int argc, char** argv) {
     // 1.  Extract arguments
+    if(argc < 4){
+      printf("Error: Not enough arguments\n");
+      exit(1);
+    }else if(argc > 4){
+      printf("Error: Too many arguments\n");
+      exit(1);
+    }
+
     int number_of_factories = atoi(argv[1]);
     int number_of_kids = atoi(argv[2]);
     int number_of_seconds = atoi(argv[3]);
-
     //Ensures that all arguments are greater than 0
     if(number_of_factories <= 0 || number_of_kids <= 0 || number_of_seconds <= 0){
       printf("Error: arguments are not greater than 0\n");
