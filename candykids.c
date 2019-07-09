@@ -1,5 +1,5 @@
-#include "bbuff.c"
-#include "stats.c"
+#include "bbuff.h"
+#include "stats.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -30,7 +30,7 @@ void *candy_factory_function(void* arg) {
   while(!stop_thread){
     //wait random time between 0-3 inclusive seconds
     int wait_time = rand()%3;
-    printf("\tFactory %d ships candy & waits %ds\n", *num, wait_time);
+    printf("Factory %d ships candy & waits %ds\n", *num, wait_time);
     //allocate new candy item and populate its fields
     candy_t *new_candy = malloc(sizeof(candy_t));
     new_candy->factory_number = *num;
@@ -38,10 +38,11 @@ void *candy_factory_function(void* arg) {
 
     //adding candy to bounded buffer
     bbuff_blocking_insert(new_candy);
+    stats_record_produced(*num);
 
     sleep(wait_time);
   }
-  printf("Candy-factory %d done", *num);
+  printf("Candy-factory %d done\n", *num);
   return NULL;
 }
 
@@ -51,7 +52,8 @@ void *kid_function() {
     //sleep random time between 0-1 inclusive seconds
     int wait_time = rand()%1;
     //extract candy from bounded buffer
-    printf("%p", bbuff_blocking_extract()); // ??????????
+    candy_t* consumed = bbuff_blocking_extract();
+    stats_record_consumed(consumed->factory_number, current_time_in_ms() - consumed->time_stamp_in_ms);
 
     sleep(wait_time);
   }
@@ -80,15 +82,12 @@ int main(int argc, char** argv) {
     pthread_t factory_thread_array[number_of_factories];
     //create array holding factory numbers to join on later
     int factory_id_array[number_of_factories];
-    //attr init to run pthread_create function (doesn't need values in this case)
-    pthread_attr_t *fac_attr;
-    pthread_attr_init(fac_attr);
 
     for(int i = 0; i < number_of_factories; i++){
       factory_id_array[i] = i;
       pthread_create(&factory_thread_array[i],
                       //attr to be passed to create function
-                      fac_attr,
+                      0,
                       //function to be executed
                       candy_factory_function,
                       //arg to be passed into function
@@ -98,14 +97,11 @@ int main(int argc, char** argv) {
     // 4.  Launch kid threads
     //create array holding the kid threads
     pthread_t kid_thread_array[number_of_kids];
-    //attr init to run pthread_create function (doesn't need values in this case)
-    pthread_attr_t *kid_attr;
-    pthread_attr_init(kid_attr);
 
     for(int j = 0; j < number_of_kids; j++){
       pthread_create(&kid_thread_array[j],
                       //attr to be passed to create function
-                      kid_attr,
+                      0,
                       //function to be executed
                       kid_function,
                       //arg to be passed into function
